@@ -1,8 +1,27 @@
+#!/usr/bin/python3
 import sys
+import pandas as pd
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QWidget
+data = pd.read_excel(r'Farhang_farsi.xlsx')
+
+
+def Matic(dataOfCsv):
+    preparedSentence = []
+    for word in dataOfCsv.iloc[:, 0]:
+        for pronoun in ["من", "ما"]:
+            existWord = dataOfCsv.iloc[:, 0].str.contains(pronoun + word).any()
+            if existWord:
+                if pronoun == "ما":
+                    preparedSentence.append("به " + pronoun + " نگو " + word +
+                                            "," + pronoun + word + " تو نیستیم .")
+                else:
+                    preparedSentence.append("به " + pronoun + " نگو " + word +
+                                            "," + pronoun + word + " تو نیستم .")
+    finalSentence = set(preparedSentence)
+    return finalSentence
+
+
+'''from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 
 app = QApplication(sys.argv)
 
@@ -16,3 +35,4 @@ helloMsg.move(60, 15)
 window.show()
 
 sys.exit(app.exec_())
+'''
