@@ -93,7 +93,8 @@ class windowMatic(QMainWindow):
 
         # This code for save sentences on file txt
         with open("Result.txt", 'w', encoding='utf-8') as file:
-            file.write(finalSen)
+            for listitem in finalSen:
+                file.write('%s\n' % listitem)
         file.close()
 
 
