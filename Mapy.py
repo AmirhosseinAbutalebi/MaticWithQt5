@@ -7,6 +7,7 @@ import sys
 import pandas as pd
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QPushButton
+from PyQt5 import QtGui
 
 # This define just for create sentences and get dataframe and Make changes and return array of sentences
 def Matic(dataOfCsv):
@@ -72,7 +73,7 @@ class windowMatic(QMainWindow):
         # Call function when the button is clicked
         self.submit.clicked.connect(self.onClicked)
 
-        #self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+        self.setWindowIcon(QtGui.QIcon('Icon.png'))
 
         # Display the window
         self.show()
@@ -89,6 +90,12 @@ class windowMatic(QMainWindow):
 
         # Call function for get sentences
         finalSen = Matic(data)
+
+        # This code for save sentences on file txt
+        with open("Result.txt", 'w', encoding='utf-8') as file:
+            file.write(finalSen)
+        file.close()
+
 
         # With this output just we make sure that program do job
         output = "Operations performed"
