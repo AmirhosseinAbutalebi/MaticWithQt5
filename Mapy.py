@@ -6,15 +6,9 @@ and pyqt for use qt and ui and sys for access the system commends
 import sys
 import pandas as pd
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QPushButton
 
-# define variable for get data csv or xlsx and use it for Matic
-data = pd.read_excel(r'Farhang_farsi.xlsx')
-
-# this array has final sentences that we can Extraction from file
-finalSen = []
-
-# this define just for create sentences and get dataframe and Make changes and return array of sentences
+# This define just for create sentences and get dataframe and Make changes and return array of sentences
 def Matic(dataOfCsv):
 
     # This variable is made for all sentences because we may have a duplicate sentence
@@ -46,29 +40,75 @@ def Matic(dataOfCsv):
     return finalSentence
 
 
-finalSen = Matic(data)
-'''
-The following code is also for testing sentences
-You can leave a comment
-print(finalSen)
-'''
+class windowMatic(QMainWindow):
 
-def window():
-    app = QApplication(sys.argv)
-    widget = QWidget()
+    def __init__(self):
+        # Call the parent constructor
+        super().__init__()
 
-    textLabel = QLabel(widget)
-    textLabel.setText("Hello World!")
-    textLabel.move(110,85)
+        # Set the title of the window
+        self.setWindowTitle("Matic")
+        # Set the width and height of the window
+        self.resize(350, 160)
+        # Move the position of the window
+        self.move(800, 400)
 
-    widget.setGeometry(50,50,320,200)
-    widget.setWindowTitle("Matic")
-    widget.show()
-    sys.exit(app.exec_())
+        # Create label for the Path of the file csv or xlsx
+        self.lbl1 = QLabel('Write directory of csv or xlsx :', self)
+        self.lbl1.setGeometry(10, 0, 300, 50)
+
+        # Create textbox for Path
+        self.textbox1 = QTextEdit(self)
+        self.textbox1.setGeometry(10, 45, 330, 30)
+
+        # Create push button for start the Matic XD
+        self.submit = QPushButton('Start', self)
+        self.submit.setGeometry(80, 90, 190, 30)
+
+        # Create label for show the result Operations performed
+        self.lblResult = QLabel('', self)
+        self.lblResult.setGeometry(110, 110, 200, 50)
+
+        # Call function when the button is clicked
+        self.submit.clicked.connect(self.onClicked)
+
+        #self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+
+        # Display the window
+        self.show()
+
+    def onClicked(self):
+        # This array has final sentences that we can Extraction from file
+        finalSen = []
+
+        # Define variable for get data csv or xlsx and use it for Matic
+        pathOfCsvorxlsx = self.textbox1.toPlainText()
+
+        # Read file csv or xlsx
+        data = pd.read_excel(pathOfCsvorxlsx)
+
+        # Call function for get sentences
+        finalSen = Matic(data)
+
+        # With this output just we make sure that program do job
+        output = "Operations performed"
+        self.lblResult.setText(output)
+
 
 '''
 With this code run function
 '''
 if __name__ == '__main__':
+
+    '''
+    The follow code just for test def Matic and
+    can remove or tested.
     finalSen = Matic(data)
-    window()
+    print(finalSen)
+    '''
+
+    # Create object PyQt application
+    app = QApplication([])
+    window = windowMatic()
+    # Start the event loop for executing the application
+    app.exec()
